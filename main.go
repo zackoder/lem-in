@@ -146,15 +146,17 @@ func main() {
 	var start, end []string
 	for i := 0; i < len(data); i++ {
 		if strings.Contains(data[i], "##start") {
-			if i+1 <len(data) && strings.Contains(data[i+1], "#") {
+			if i+1 < len(data) && strings.Contains(data[i+1], "#") {
 				i++
+			}else if i+1 < len(data) {
+				start = strings.Split(data[i+1], " ")
 			}
-			start = strings.Split(data[i+1], " ")
 		} else if strings.Contains(data[i], "##end") {
 			if i+1 <len(data) && strings.Contains(data[i+1], "#") {
 				i++
+			} else if i+1 < len(data) {
+				end = strings.Split(data[i+1], " ")
 			}
-			end = strings.Split(data[i+1], " ")
 		} else if strings.Contains(data[i], " ") {
 			roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 		} else if strings.Contains(data[i], "-") {
