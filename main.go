@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	graph "graphs/Path"
 	"os"
 	"strconv"
 	"strings"
+
+	graph "graphs/Path"
 )
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 	var roomsNames, links []string
 	var start, end []string
 	roomsNames, links, start, end = graph.HandulFile(data)
-	//fmt.Println(roomsNames, links, start, end)
+	// fmt.Println(roomsNames, links, start, end)
 	if len(start) == 0 {
 		fmt.Println("you did not provide a start")
 		os.Exit(0)
@@ -62,8 +63,10 @@ func main() {
 	startRoom := rooms.GetRoom(string(start[0]))
 	endRoom := rooms.GetRoom(string(end[0]))
 	var largestDisjointPaths [][]string
+	var allPaths [][]string
 	if startRoom != nil && endRoom != nil {
-		allPaths := rooms.Dfs(startRoom, endRoom)
+		allPaths = rooms.Dfs(startRoom, endRoom)
+		SortPath(allPaths)
 		largestDisjointPaths = graph.FindLargestDisjointPaths(allPaths)
 
 	} else {
@@ -75,7 +78,11 @@ func main() {
 		fmt.Println("there are no way from start to end")
 		return
 	}
-	graph.Lemin(antsNUm, largestDisjointPaths)
+	if antsNUm > 1 {
+		graph.Lemin(antsNUm, largestDisjointPaths)
+	} else {
+		graph.Lemin(antsNUm, allPaths)
+	}
 }
 
 func DellSart(s [][]string) [][]string {
@@ -84,4 +91,14 @@ func DellSart(s [][]string) [][]string {
 		res = append(res, t[1:])
 	}
 	return res
+}
+
+func SortPath(p [][]string) {
+	for i := 0; i < len(p); i++ {
+		for j := i + 1; j < len(p); j++ {
+			if len(p[i]) > len(p[j]) {
+				p[i], p[j] = p[j], p[i]
+			}
+		}
+	}
 }
