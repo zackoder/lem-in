@@ -78,11 +78,8 @@ func main() {
 		fmt.Println("there are no way from start to end")
 		return
 	}
-	if antsNUm > 1 {
-		graph.Lemin(antsNUm, largestDisjointPaths)
-	} else {
-		graph.Lemin(antsNUm, allPaths)
-	}
+
+	graph.Lemin(antsNUm, largestDisjointPaths)
 }
 
 func DellSart(s [][]string) [][]string {

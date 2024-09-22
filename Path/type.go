@@ -52,30 +52,29 @@ func (room *Rooms) AddConnex(from, to string) {
 }
 
 func (rooms *Rooms) Dfs(startRoom *Room, endRoom *Room) [][]string {
-	var currentPath []string
+
 	var allPaths [][]string
 	visited := make(map[*Room]bool)
-	var Dfshelper func(room *Room)
-	Dfshelper = func(room *Room) {
-		visited[room] = true
-		currentPath = append(currentPath, room.Name)
+	DfsHelper(startRoom, endRoom, visited, []string{}, &allPaths)
+	return allPaths
+}
 
-		if room == endRoom {
-			pathcopy := make([]string, len(currentPath))
-			copy(pathcopy, currentPath)
-			allPaths = append(allPaths, pathcopy)
-		} else {
-			for _, neighbors := range room.Rooms {
-				if !visited[neighbors] {
-					Dfshelper(neighbors)
-				}
+func DfsHelper(room *Room, endroom *Room, visited map[*Room]bool, currentPath []string, allPath *[][]string) {
+	visited[room] = true
+	currentPath = append(currentPath, room.Name)
+	if room == endroom {
+		pathcopy := make([]string, len(currentPath))
+		copy(pathcopy, currentPath)
+		*allPath = append(*allPath, pathcopy)
+	} else {
+		for _, neighbore := range room.Rooms {
+			if !visited[neighbore] {
+				//fmt.Println(visited[neighbore])
+				DfsHelper(neighbore, endroom, visited, currentPath, allPath)
 			}
 		}
-		currentPath = currentPath[:len(currentPath)-1]
-		visited[room] = false
 	}
 
-	Dfshelper(startRoom)
-
-	return allPaths
+	currentPath = currentPath[:len(currentPath)-1]
+	visited[room] = false
 }
