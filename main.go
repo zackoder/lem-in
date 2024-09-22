@@ -64,21 +64,23 @@ func main() {
 	endRoom := rooms.GetRoom(string(end[0]))
 	var largestDisjointPaths [][]string
 	var allPaths [][]string
+	var new [][]string
 	if startRoom != nil && endRoom != nil {
 		allPaths = rooms.Dfs(startRoom, endRoom)
 		SortPath(allPaths)
+		if len(allPaths) > antsNUm {
+			new = graph.FindLargestDisjointPaths(allPaths[:antsNUm])
+		}
 		largestDisjointPaths = graph.FindLargestDisjointPaths(allPaths)
-
 	} else {
 		fmt.Println("Start or end room not found!")
 		return
 	}
-	largestDisjointPaths = DellSart(largestDisjointPaths)
-	if len(largestDisjointPaths) == 0 {
-		fmt.Println("there are no way from start to end")
+	if len(new) >= antsNUm {
+		graph.Lemin(antsNUm, DellSart(new))
 		return
 	}
-
+	largestDisjointPaths = DellSart(largestDisjointPaths)
 	graph.Lemin(antsNUm, largestDisjointPaths)
 }
 

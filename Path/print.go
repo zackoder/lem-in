@@ -6,6 +6,10 @@ import (
 )
 
 func Lemin(n int, p [][]string) {
+	if len(p) == 0 {
+		fmt.Println("there are no way from start to end")
+		return
+	}
 	var antQueues [][]int = make([][]int, len(p))
 	i := 1
 	min := minLen(p, antQueues)

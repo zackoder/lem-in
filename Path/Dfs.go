@@ -90,11 +90,11 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 				log.Fatal("invalid syntax")
 			}
 			if foundstart {
-				start = strings.Fields(data[i])
+				start = strings.Split(data[i], " ")
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 				foundstart = false
 			} else if foundend {
-				end = strings.Fields(data[i])
+				end = strings.Split(data[i], " ")
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 				foundend = false
 			} else if strings.Contains(data[i], " ") {
