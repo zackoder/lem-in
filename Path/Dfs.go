@@ -73,12 +73,12 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 	for i := 0; i < len(data); i++ {
 		if strings.HasPrefix(data[i], "#") {
 			if data[i] == "##start" {
-				if foundend || len(start) != 0 || foundstart {
+				if len(start) != 0 || foundstart {
 					log.Fatal("invalid syntax")
 				}
 				foundstart = true
 			} else if data[i] == "##end" {
-				if foundstart || len(end) != 0 || foundend {
+				if len(end) != 0 || foundend {
 					log.Fatal("invalid syntax")
 				}
 				foundend = true
@@ -86,6 +86,9 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 				continue
 			}
 		} else {
+			if foundend && foundstart {
+				log.Fatal("invalid syntax")
+			}
 			if foundstart {
 				start = strings.Fields(data[i])
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
@@ -95,7 +98,7 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 				foundend = false
 			} else if strings.Contains(data[i], " ") {
-				//fmt.Println(data[i])
+				// fmt.Println(data[i])
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 			} else if strings.Contains(data[i], "-") {
 				links = append(links, strings.Split(data[i], "-")...)
