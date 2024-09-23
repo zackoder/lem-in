@@ -41,8 +41,10 @@ func Lemin(n int, p [][]string) {
 		}
 	}
 	// fmt.Println(solution)
+	res := []string{}
 	for _, v := range solution {
 		for _, w := range v {
+			res = append(res, w)
 			fmt.Printf("%s ", w)
 		}
 		if len(v) == 0 {
@@ -50,6 +52,7 @@ func Lemin(n int, p [][]string) {
 		}
 		fmt.Println()
 	}
+	fmt.Println(len(res))
 }
 
 func minLen(p [][]string, ants [][]int) int {

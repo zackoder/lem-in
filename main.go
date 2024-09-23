@@ -64,24 +64,29 @@ func main() {
 	endRoom := rooms.GetRoom(string(end[0]))
 	var largestDisjointPaths [][]string
 	var allPaths [][]string
-	var new [][]string
+	// var new [][]string
 	if startRoom != nil && endRoom != nil {
 		allPaths = rooms.Dfs(startRoom, endRoom)
 		SortPath(allPaths)
-		if len(allPaths) > antsNUm {
-			new = graph.FindLargestDisjointPaths(allPaths[:antsNUm])
-		}
+		// if len(allPaths) > antsNUm {
+		// 	new = graph.FindLargestDisjointPaths(allPaths[:antsNUm])
+		// }
 		largestDisjointPaths = graph.FindLargestDisjointPaths(allPaths)
 	} else {
 		fmt.Println("Start or end room not found!")
 		return
 	}
-	if len(new) >= antsNUm {
-		graph.Lemin(antsNUm, DellSart(new))
-		return
+	for t := range largestDisjointPaths {
+		fmt.Println(largestDisjointPaths[t])
 	}
+	// fmt.Println(len(new), antsNUm)
+	//	return
+	// graph.Lemin(antsNUm, DellSart(new))
+	// return
 	largestDisjointPaths = DellSart(largestDisjointPaths)
 	graph.Lemin(antsNUm, largestDisjointPaths)
+	res := `L1-A0 L4-B0 L6-C0 L1-A1 L2-A0 L4-B1 L5-B0 L6-C1 L1-A2 L2-A1 L3-A0 L4-E2 L5-B1 L6-C2 L9-B0 L1-end L2-A2 L3-A1 L4-D2 L5-E2 L6-C3 L7-A0 L9-B1 L2-end L3-A2 L4-D3 L5-D2 L6-I4 L7-A1 L8-A0 L9-E2 L3-end L4-end L5-D3 L6-I5 L7-A2 L8-A1 L9-D2 L5-end L6-end L7-end L8-A2 L9-D3 L8-end L9-end`
+	fmt.Println(len(strings.Fields(res)))
 }
 
 func DellSart(s [][]string) [][]string {
