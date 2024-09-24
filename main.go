@@ -18,10 +18,10 @@ func main() {
 	data := strings.Split(fileData, "\n")
 	antsNUm, err := strconv.Atoi(data[0])
 	if err != nil {
-		fmt.Println(data[0], "is not a number")
+		fmt.Println("invalid number of Ants")
 		return
 	} else if antsNUm <= 0 {
-		fmt.Println("put valid numbre")
+		fmt.Println("invalid number of Ants")
 		return
 	}
 	data = data[1:]
@@ -29,15 +29,15 @@ func main() {
 	var start, end []string
 	roomsNames, links, start, end = graph.HandulFile(data)
 	if len(start) == 0 {
-		fmt.Println("you did not provide a start")
+		fmt.Println("no start room found")
 		os.Exit(0)
 	}
 	if len(end) == 0 {
-		fmt.Println("you did not provide an end")
+		fmt.Println("no end room found")
 		os.Exit(0)
 	}
 	if len(roomsNames)%3 != 0 {
-		fmt.Println("invalid syntax")
+		fmt.Println("ERROR: invalid data format")
 		os.Exit(0)
 	}
 	if start[0] == end[0] {
@@ -57,7 +57,7 @@ func main() {
 		links = links[2:]
 	}
 	if len(links) > 0 {
-		fmt.Println("invalid syntax")
+		fmt.Println("ERROR: invalid data format")
 		os.Exit(0)
 	}
 

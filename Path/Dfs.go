@@ -10,7 +10,7 @@ import (
 
 func isDisjoint(path1, path2 []string) bool {
 	rooms1 := make(map[string]bool)
-	if len(path2) == 2 {
+	if len(path2) == 2 && len(path1) == 2 {
 		return false
 	}
 	for _, room := range path1[1 : len(path1)-1] {
@@ -49,26 +49,26 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 		if strings.HasPrefix(data[i], "#") {
 			if data[i] == "##start" {
 				if len(start) != 0 || foundstart {
-					log.Fatal("invalid syntax")
+					log.Fatal("ERROR: invalid data format")
 				}
 				foundstart = true
 			} else if data[i] == "##end" {
 				if len(end) != 0 || foundend {
-					log.Fatal("invalid syntax")
+					log.Fatal("ERROR: invalid data format")
 				}
 				foundend = true
-			} else if strings.HasPrefix(data[i], "##")  {
-				log.Fatal(data[i]," is not commant")
+			} else if strings.HasPrefix(data[i], "##") {
+				log.Fatal(data[i], " is not commant")
 				continue
 			}
 		} else {
 			if foundend && foundstart {
-				log.Fatal("invalid syntax")
+				log.Fatal("ERROR: invalid data format")
 			}
 			if foundstart {
 				start = strings.Split(data[i], " ")
 				if len(start) != 3 {
-					log.Fatal("invalid syntat")
+					log.Fatal("ERROR: invalid data format")
 				}
 				LogEro(start[1])
 				LogEro(start[2])
@@ -77,7 +77,7 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 			} else if foundend {
 				end = strings.Split(data[i], " ")
 				if len(end) != 3 {
-					log.Fatal("invalid syntat")
+					log.Fatal("ERROR: invalid data format")
 				}
 				LogEro(end[1])
 				LogEro(end[2])
@@ -85,11 +85,11 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 				foundend = false
 			} else if strings.Contains(data[i], " ") {
 				if startlink {
-					log.Fatal("invalid syntat")
+					log.Fatal("ERROR: invalid data format")
 				}
 				split := strings.Split(data[i], " ")
 				if len(split) != 3 {
-					log.Fatal("invalid syntat")
+					log.Fatal("ERROR: invalid data format")
 				}
 				LogEro(split[1])
 				LogEro(split[2])
@@ -98,14 +98,14 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 				startlink = true
 				split := strings.Split(data[i], "-")
 				if len(split) != 2 {
-					log.Fatal("invalid syntat")
+					log.Fatal("ERROR: invalid data format")
 				}
 				if split[0] == "" || split[1] == "" {
-					log.Fatal("invalid syntat")
+					log.Fatal("ERROR: invalid data format")
 				}
 				links = append(links, strings.Split(data[i], "-")...)
 			} else {
-				log.Fatal("invalid syntax")
+				log.Fatal("ERROR: invalid data format")
 			}
 		}
 	}
