@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -41,8 +42,10 @@ func Getingdata() string {
 func HandulFile(data []string) ([]string, []string, []string, []string) {
 	var start, end []string
 	var roomsNames, links []string
+	startlink := false
 	foundstart, foundend := false, false
 	for i := 0; i < len(data); i++ {
+		data[i] = strings.TrimRight(data[i], " ")
 		if strings.HasPrefix(data[i], "#") {
 			if data[i] == "##start" {
 				if len(start) != 0 || foundstart {
@@ -54,7 +57,8 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 					log.Fatal("invalid syntax")
 				}
 				foundend = true
-			} else {
+			} else if strings.HasPrefix(data[i], "##")  {
+				log.Fatal(data[i]," is not commant")
 				continue
 			}
 		} else {
@@ -63,15 +67,42 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 			}
 			if foundstart {
 				start = strings.Split(data[i], " ")
+				if len(start) != 3 {
+					log.Fatal("invalid syntat")
+				}
+				LogEro(start[1])
+				LogEro(start[2])
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 				foundstart = false
 			} else if foundend {
 				end = strings.Split(data[i], " ")
+				if len(end) != 3 {
+					log.Fatal("invalid syntat")
+				}
+				LogEro(end[1])
+				LogEro(end[2])
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 				foundend = false
 			} else if strings.Contains(data[i], " ") {
-				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
+				if startlink {
+					log.Fatal("invalid syntat")
+				}
+				split := strings.Split(data[i], " ")
+				if len(split) != 3 {
+					log.Fatal("invalid syntat")
+				}
+				LogEro(split[1])
+				LogEro(split[2])
+				roomsNames = append(roomsNames, split...)
 			} else if strings.Contains(data[i], "-") {
+				startlink = true
+				split := strings.Split(data[i], "-")
+				if len(split) != 2 {
+					log.Fatal("invalid syntat")
+				}
+				if split[0] == "" || split[1] == "" {
+					log.Fatal("invalid syntat")
+				}
 				links = append(links, strings.Split(data[i], "-")...)
 			} else {
 				log.Fatal("invalid syntax")
@@ -79,4 +110,11 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 		}
 	}
 	return roomsNames, links, start, end
+}
+
+func LogEro(s string) {
+	_, err := strconv.Atoi(s)
+	if err != nil {
+		log.Fatal("you can't use string as coor")
+	}
 }

@@ -1,8 +1,8 @@
-10000
+10
 #rooms
 ##start
 start 0 3
-##end
+##end     
 end 10 1
 C0 1 0
 C1 2 0
@@ -25,12 +25,12 @@ F2 6 2
 F3 7 2
 F4 8 2
 G0 1 5
-G1 2 5
 G2 3 5
 G3 4 5
+G1 2 5
 G4 6 5
-H3-F2
 H3-H4
+H3-F2
 H4-A2
 start-G0
 G0-G1
@@ -44,7 +44,7 @@ A0-D1
 A1-A2
 A1-B1
 A2-end
-A2-C3
+A2-C3                 
 start-B0
 B0-B1
 B1-E2

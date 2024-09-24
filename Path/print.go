@@ -61,10 +61,11 @@ func Lemin(n int, p [][]string) ([][]string, int, int) {
 	return solution, res, len(solution)
 }
 
-func BestWay(chanl chan Data) [][]string {
+func BestWay(chanl chan Data) ([][]string, int) {
 	bestway := [][]string{}
 	minclo := 0
 	minrow := 0
+	indix := 0
 	_ = minclo
 	_ = minrow
 	for r := range chanl {
@@ -72,20 +73,23 @@ func BestWay(chanl chan Data) [][]string {
 			bestway = r.Realst
 			minclo = r.Col
 			minrow = r.Row
+			indix = r.Index
 		} else {
 			if r.Row < minrow {
 				bestway = r.Realst
 				minclo = r.Col
 				minrow = r.Row
+				indix = r.Index
 			} else if r.Row == minrow {
 				if minclo > r.Col {
 					bestway = r.Realst
 					minclo = r.Col
 					minrow = r.Row
+					indix = r.Index
 				}
 			}
 		}
 	}
 
-	return bestway
+	return bestway, indix
 }

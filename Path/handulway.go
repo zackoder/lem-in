@@ -3,6 +3,7 @@ package graph
 type Data struct {
 	Col, Row int
 	Realst   [][]string
+	Index    int
 }
 
 func AllPathDisjoin(allPaths [][]string) map[int][][]string {
@@ -26,10 +27,10 @@ func AllPathDisjoin(allPaths [][]string) map[int][][]string {
 		}
 	}
 
-	for i, Paths := range res {
-		for _, r := range allPaths {
-			if !HandulWay(Paths, r) {
-				res[i] = append(res[i], r)
+	for _, Paths := range allPaths {
+		for i, r := range res {
+			if !HandulWay(r, Paths) {
+				res[i] = append(res[i], Paths)
 			}
 		}
 	}

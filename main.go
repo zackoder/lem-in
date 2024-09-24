@@ -14,6 +14,7 @@ import (
 func main() {
 	rooms := graph.Rooms{}
 	fileData := graph.Getingdata()
+	fileData = strings.TrimRight(fileData, "\n")
 	data := strings.Split(fileData, "\n")
 	antsNUm, err := strconv.Atoi(data[0])
 	if err != nil {
@@ -76,23 +77,23 @@ func main() {
 	all := graph.AllPathDisjoin(allPaths)
 	var wg sync.WaitGroup
 	chanl := make(chan graph.Data, len(all))
-	TakeFunc := func(allPaths [][]string, n int) {
+	TakeFunc := func(allPaths [][]string, n, index int) {
 		defer wg.Done()
 		res, col, row := graph.Lemin(n, DellSart(allPaths))
 		chanl <- graph.Data{
 			Row:    row,
 			Col:    col,
 			Realst: res,
+			Index:  index,
 		}
 	}
-
 	wg.Add(len(all))
-	for _, t := range graph.AllPathDisjoin(allPaths) {
-		go TakeFunc(t, antsNUm)
+	for i, t := range all {
+		go TakeFunc(t, antsNUm, i)
 	}
 	wg.Wait()
 	close(chanl)
-	s := graph.BestWay(chanl)
+	s, _ := graph.BestWay(chanl)
 	fmt.Println(fileData)
 	fmt.Println()
 	for t := range s {
