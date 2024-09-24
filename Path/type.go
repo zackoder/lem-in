@@ -52,7 +52,6 @@ func (room *Rooms) AddConnex(from, to string) {
 }
 
 func (rooms *Rooms) Dfs(startRoom *Room, endRoom *Room) [][]string {
-
 	var allPaths [][]string
 	visited := make(map[*Room]bool)
 	DfsHelper(startRoom, endRoom, visited, []string{}, &allPaths)
@@ -69,7 +68,7 @@ func DfsHelper(room *Room, endroom *Room, visited map[*Room]bool, currentPath []
 	} else {
 		for _, neighbore := range room.Rooms {
 			if !visited[neighbore] {
-				//fmt.Println(visited[neighbore])
+				// fmt.Println(visited[neighbore])
 				DfsHelper(neighbore, endroom, visited, currentPath, allPath)
 			}
 		}
