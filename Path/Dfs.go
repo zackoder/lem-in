@@ -7,38 +7,6 @@ import (
 	"strings"
 )
 
-func FindLargestDisjointPaths(paths [][]string) [][]string {
-	var largestSet [][]string
-	n := len(paths)
-
-	var dfs func(idx int, current [][]string)
-	dfs = func(idx int, current [][]string) {
-		if idx == n {
-			if len(current) > len(largestSet) {
-				largestSet = append([][]string{}, current...)
-			}
-			return
-		}
-
-		canAdd := true
-		for _, p := range current {
-			if !isDisjoint(p, paths[idx]) {
-				canAdd = false
-				break
-			}
-		}
-		if canAdd {
-			dfs(idx+1, append(current, paths[idx]))
-		}
-		dfs(idx+1, current)
-	}
-	dfs(0, [][]string{})
-	return largestSet
-}
-
-// func AllPathDisjoin() {
-// }
-
 func isDisjoint(path1, path2 []string) bool {
 	rooms1 := make(map[string]bool)
 	if len(path2) == 2 {
@@ -102,12 +70,10 @@ func HandulFile(data []string) ([]string, []string, []string, []string) {
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 				foundend = false
 			} else if strings.Contains(data[i], " ") {
-				// fmt.Println(data[i])
 				roomsNames = append(roomsNames, strings.Split(data[i], " ")...)
 			} else if strings.Contains(data[i], "-") {
 				links = append(links, strings.Split(data[i], "-")...)
 			} else {
-				fmt.Println(data[i])
 				log.Fatal("invalid syntax")
 			}
 		}

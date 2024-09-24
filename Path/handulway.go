@@ -13,8 +13,8 @@ func AllPathDisjoin(allPaths [][]string) map[int][][]string {
 		if len(res) == 0 {
 			res[indix] = append(res[indix], path)
 		} else {
-			for i, roes := range res {
-				if !OK(roes, path) {
+			for i, way := range res {
+				if !HandulWay(way, path) {
 					res[i] = append(res[i], path)
 					passed = true
 				}
@@ -26,9 +26,9 @@ func AllPathDisjoin(allPaths [][]string) map[int][][]string {
 		}
 	}
 
-	for i, t := range res {
+	for i, Paths := range res {
 		for _, r := range allPaths {
-			if !OK(t, r) {
+			if !HandulWay(Paths, r) {
 				res[i] = append(res[i], r)
 			}
 		}
@@ -36,9 +36,9 @@ func AllPathDisjoin(allPaths [][]string) map[int][][]string {
 	return res
 }
 
-func OK(p [][]string, f []string) bool {
-	for _, t := range p {
-		if !isDisjoint(t, f) {
+func HandulWay(Paths [][]string, way []string) bool {
+	for _, t := range Paths {
+		if !isDisjoint(t, way) {
 			return true
 		}
 	}
