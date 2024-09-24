@@ -5,13 +5,13 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 
 	graph "graphs/Path"
 )
 
 func main() {
 	rooms := graph.Rooms{}
-
 	fileData := graph.Getingdata()
 	data := strings.Split(fileData, "\n")
 	antsNUm, err := strconv.Atoi(data[0])
@@ -62,31 +62,69 @@ func main() {
 
 	startRoom := rooms.GetRoom(string(start[0]))
 	endRoom := rooms.GetRoom(string(end[0]))
-	var largestDisjointPaths [][]string
+	// var largestDisjointPaths [][]string
 	var allPaths [][]string
-	// var new [][]string
+	//	var new [][]string
 	if startRoom != nil && endRoom != nil {
 		allPaths = rooms.Dfs(startRoom, endRoom)
 		SortPath(allPaths)
 		// if len(allPaths) > antsNUm {
 		// 	new = graph.FindLargestDisjointPaths(allPaths[:antsNUm])
 		// }
-		largestDisjointPaths = graph.FindLargestDisjointPaths(allPaths)
+		// largestDisjointPaths = graph.FindLargestDisjointPaths(allPaths)
 	} else {
 		fmt.Println("Start or end room not found!")
 		return
 	}
-	for t := range largestDisjointPaths {
-		fmt.Println(largestDisjointPaths[t])
+	// largestDisjointPaths = DellSart(largestDisjointPaths)
+	all := graph.AllPathDisjoin(allPaths)
+	// for i, t := range all {
+	// 	fmt.Println(i, t)
+	// }
+
+	var wg sync.WaitGroup
+	chanl := make(chan graph.Data, len(all))
+	TakeFunc := func(allPaths [][]string, n int) {
+		defer wg.Done()
+		res, col, row := graph.Lemin1(n, DellSart(allPaths))
+		chanl <- graph.Data{
+			Row:    row,
+			Col:    col,
+			Realst: res,
+		}
 	}
-	// fmt.Println(len(new), antsNUm)
-	//	return
-	// graph.Lemin(antsNUm, DellSart(new))
+
+	wg.Add(len(all))
+	for _, t := range graph.AllPathDisjoin(allPaths) {
+		go TakeFunc(t, antsNUm)
+	}
+	wg.Wait()
+	close(chanl)
+
+	// for r := range chanl {
+	// 	fmt.Println(r.Col)
+	// 	fmt.Println(r.Row)
+	// 	for t := range r.Realst {
+	// 		fmt.Println(r.Realst[t])
+	// 	}
+
+	// 	fmt.Println("-----------------------------------------------------------")
+	// }
+	s := graph.BestWay(chanl)
+	for t := range s {
+		fmt.Println(strings.Join(s[t], " "))
+	}
+
 	// return
-	largestDisjointPaths = DellSart(largestDisjointPaths)
-	graph.Lemin(antsNUm, largestDisjointPaths)
-	res := `L1-A0 L4-B0 L6-C0 L1-A1 L2-A0 L4-B1 L5-B0 L6-C1 L1-A2 L2-A1 L3-A0 L4-E2 L5-B1 L6-C2 L9-B0 L1-end L2-A2 L3-A1 L4-D2 L5-E2 L6-C3 L7-A0 L9-B1 L2-end L3-A2 L4-D3 L5-D2 L6-I4 L7-A1 L8-A0 L9-E2 L3-end L4-end L5-D3 L6-I5 L7-A2 L8-A1 L9-D2 L5-end L6-end L7-end L8-A2 L9-D3 L8-end L9-end`
-	fmt.Println(len(strings.Fields(res)))
+	// fmt.Println(largestDisjointPaths)
+	// return
+	// return
+	// for _, t := range all {
+	// 	//SortPath(t)
+	// 	graph.Lemin(antsNUm, DellSart(t))
+	// }
+	// res := `L1-A0 L4-B0 L6-C0 L1-A1 L2-A0 L4-B1 L5-B0 L6-C1 L1-A2 L2-A1 L3-A0 L4-E2 L5-B1 L6-C2 L9-B0 L1-end L2-A2 L3-A1 L4-D2 L5-E2 L6-C3 L7-A0 L9-B1 L2-end L3-A2 L4-D3 L5-D2 L6-I4 L7-A1 L8-A0 L9-E2 L3-end L4-end L5-D3 L6-I5 L7-A2 L8-A1 L9-D2 L5-end L6-end L7-end L8-A2 L9-D3 L8-end L9-end`
+	// fmt.Println(len(strings.Fields(res)))
 }
 
 func DellSart(s [][]string) [][]string {

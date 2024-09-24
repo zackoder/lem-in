@@ -32,14 +32,18 @@ func FindLargestDisjointPaths(paths [][]string) [][]string {
 		}
 		dfs(idx+1, current)
 	}
-
 	dfs(0, [][]string{})
 	return largestSet
 }
 
+// func AllPathDisjoin() {
+// }
+
 func isDisjoint(path1, path2 []string) bool {
 	rooms1 := make(map[string]bool)
-
+	if len(path2) == 2 {
+		return false
+	}
 	for _, room := range path1[1 : len(path1)-1] {
 		rooms1[room] = true
 	}
