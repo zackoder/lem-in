@@ -20,8 +20,8 @@ func main() {
 	if err != nil {
 		fmt.Println("invalid number of Ants")
 		return
-	} else if antsNUm <= 0 {
-		fmt.Println("invalid number of Ants")
+	} else if antsNUm <= 0 || antsNUm > 32000 {
+		fmt.Println("you have right in range 1 and 32000")
 		return
 	}
 	data = data[1:]
@@ -41,6 +41,7 @@ func main() {
 		os.Exit(0)
 	}
 	if start[0] == end[0] {
+		fmt.Println("you are in end")
 		return
 	}
 	for i := 0; i < len(roomsNames); i++ {
