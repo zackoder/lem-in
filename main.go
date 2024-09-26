@@ -44,7 +44,7 @@ func main() {
 		fmt.Println("you are in end")
 		return
 	}
-	for i := 0; i < len(roomsNames); i++ {
+	for i := 0; i < len(roomsNames); i += 3 {
 		if roomsNames[i] == start[0] {
 			rooms.AddRoomName(roomsNames[i], true, false)
 		} else if roomsNames[i] == end[0] {
